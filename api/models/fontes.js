@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Fontes.hasMany(Noticias, {foreignKey: 'fonteId'})
     }
   }
   Fontes.init({

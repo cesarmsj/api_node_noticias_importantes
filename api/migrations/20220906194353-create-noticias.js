@@ -17,6 +17,11 @@ module.exports = {
       urlNoticia: {
         type: Sequelize.STRING
       },
+      fonte_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: { model: 'Fontes', key: 'id'}
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
