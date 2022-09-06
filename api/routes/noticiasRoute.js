@@ -1,12 +1,12 @@
 const { Router } = require('express')
-const NoticiaContoller = require('../controllers/NoticiaContoller')
+const NoticiaContoller = require('../controllers/NoticiaController')
 
 const router = Router()
 
-router.get('/noticias', NoticiaContoller.pegaTodosOsNiveis)
-router.get('/noticias/:id', NoticiaContoller.pegaUmNivel)
-router.post('/noticias', NoticiaContoller.criaNivel)
-router.put('/noticias/:id', NoticiaContoller.atualizaNivel)
-router.delete('/noticias/:id', NoticiaContoller.apagaNivel)
+router.get('/noticias', NoticiaContoller.pegaTodasNoticias)
+router.get('/noticias/:id', NoticiaContoller.pegaUmaNoticia)
+router.post('/noticias', NoticiaContoller.criaNoticia)
+router.put('/noticias/:id', NoticiaContoller.atualizaNoticia)
+router.delete('/noticias/:id', NoticiaContoller.apagaNoticia)
 
 module.exports = router
