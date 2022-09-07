@@ -1,10 +1,11 @@
-const database = require('../models')
+const { FontesServices } = require('../services')
+const fontesServices = new FontesServices()
 
 class FonteController {
     
     static async pegaTodasFontes(req, res){
         try {
-            const todasFontes = await database.Fontes.findAll()
+            const todasFontes = await fontesServices.pegaTodosOsRegistros()
             return res.status(200).json(todasFontes)
         } catch(error) {
             return res.status(500).json(error.message)
@@ -15,9 +16,7 @@ class FonteController {
         const { id } = req.params
 
         try {
-            const umaFonte = await database.Fontes.findOne( { 
-                where: { id: Number(id) }
-            } )
+            const umaFonte = await fontesServices.pegaUmRegistro(id)
             return res.status(200).json(umaFonte)
         } catch (error) {
             return res.status(500).json(error.message)
@@ -28,7 +27,7 @@ class FonteController {
         const novaNoticia = req.body
         
         try {
-            const novaNoticiaCriada = await database.Fontes.create(novaNoticia)
+            const novaNoticiaCriada = await fontesServices.criaRegistro(novaNoticia)
             return res.status(200).json(novaNoticiaCriada)
         } catch(error) {
             return res.status(500).json(error.message)
@@ -40,8 +39,8 @@ class FonteController {
         const novasInfos = req.body
 
         try {
-            await database.Fontes.update(novasInfos, { where: { id: Number(id) }})
-            const fonteAtualizada = await database.Fontes.findOne( { where: { id: Number(id) }})
+            await fontesServices.atualizaRegistro(novasInfos, id)
+            const fonteAtualizada = await fontesServices.pegaUmRegistro(id)
             return res.status(200).json(fonteAtualizada)
 
         } catch (error) {
@@ -52,7 +51,7 @@ class FonteController {
     static async apagaFonte(req, res) {
         const { id } = req.params
         try {
-            await database.Fontes.destroy({where: { id: number(id) }})
+            await fontesServices.apagaRegistro(id)
             return res.status(200).json({ mensagem: `id ${id} deletado`})
         } catch ( error ) {
             return res.status(500).josn(error.message)
@@ -62,7 +61,7 @@ class FonteController {
     static async restauraFonte(req, res) {
         const { id } = req.params
         try {
-          await database.Fontes.restore( {where: { id: Number(id) } } )
+          await fontesServices.restauraRegistro(id)
           return res.status(200).json({ mensagem: `id ${id} restaurado`})
         } catch (error) {
           return res.status(500).json(error.message)

@@ -1,10 +1,11 @@
-const database = require('../models')
+const { TagsServices } = require('../services') 
+const tagsServices = new TagsServices()
 
 class TagController {
     
     static async pegaTodasTags(req, res){
         try {
-            const todasTags = await database.Tags.findAll()
+            const todasTags = await tagsServices.pegaTodosOsRegistros()
             return res.status(200).json(todasTags)
         } catch(error) {
             return res.status(500).json(error.message)
@@ -15,9 +16,7 @@ class TagController {
         const { id } = req.params
 
         try {
-            const umaTag = await database.Tags.findOne( { 
-                where: { id: Number(id) }
-            } )
+            const umaTag = await tagsServices.pegaUmRegistro(id)
             return res.status(200).json(umaTag)
         } catch (error) {
             return res.status(500).json(error.message)
@@ -28,7 +27,7 @@ class TagController {
         const novaTag = req.body
         
         try {
-            const novaTagCriada = await database.Tags.create(novaTag)
+            const novaTagCriada = await tagsServices.criaRegistro(novaTag)
             return res.status(200).json(novaTagCriada)
         } catch(error) {
             return res.status(500).json(error.message)
@@ -40,7 +39,7 @@ class TagController {
         const novasInfos = req.body
 
         try {
-            await database.Tags.update(novasInfos, { where: { id: Number(id) }})
+            await tagsServices.atualizaRegistro(novasInfos, id)
             const tagAtualizada = await database.Tags.findOne( { where: { id: Number(id) }})
             return res.status(200).json(tagAtualizada)
 
@@ -52,7 +51,7 @@ class TagController {
     static async apagaTag(req, res) {
         const { id } = req.params
         try {
-            await database.Tags.destroy({where: { id: number(id) }})
+            await tagsServices.apagaRegistro(id)
             return res.status(200).json({ mensagem: `tag com id: ${id} deletada`})
         } catch ( error ) {
             return res.status(500).josn(error.message)
@@ -62,7 +61,7 @@ class TagController {
     static async restauraTag(req, res) {
         const { id } = req.params
         try {
-          await database.Tags.restore( {where: { id: Number(id) } } )
+          await tagsServices.restauraRegistro(id)
           return res.status(200).json({ mensagem: `id ${id} restaurado`})
         } catch (error) {
           return res.status(500).json(error.message)
