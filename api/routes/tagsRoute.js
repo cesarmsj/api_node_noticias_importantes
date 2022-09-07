@@ -3,10 +3,11 @@ const TagController = require('../controllers/TagController')
 
 const router = Router()
 
-router.get('/tags', TagController.pegaTodasAsFontes)
-router.get('/tags/:id', TagController.pegaUmaFonte)
-router.post('/tags', TagController.criaFonte)
-router.put('/tags/:id', TagController.atualizaFonte)
-router.delete('/tags/:id', TagController.apagaFonte)
+router.get('/tags', TagController.pegaTodasTags)
+router.get('/tags/:id', TagController.pegaUmaTag)
+router.post('/tags', TagController.criaTag)
+router.put('/tags/:id', TagController.atualizaTag)
+router.delete('/tags/:id', TagController.apagaTag)
+router.post('/tags/:id/restaura', TagController.restauraTag)
 
 module.exports = router

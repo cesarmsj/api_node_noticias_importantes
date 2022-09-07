@@ -2,7 +2,7 @@ const database = require('../models')
 
 class FonteController {
     
-    static async pegaTodasNoticias(req, res){
+    static async pegaTodasFontes(req, res){
         try {
             const todasFontes = await database.Fontes.findAll()
             return res.status(200).json(todasFontes)
@@ -35,21 +35,21 @@ class FonteController {
         }
     }
 
-    static async atualizaNoticia(req, res) {
+    static async atualizaFonte(req, res) {
         const { id } = req.params
         const novasInfos = req.body
 
         try {
             await database.Fontes.update(novasInfos, { where: { id: Number(id) }})
-            const noticiaAtualizada = await database.Fontes.findOne( { where: { id: Number(id) }})
-            return res.status(200).json(noticiaAtualizada)
+            const fonteAtualizada = await database.Fontes.findOne( { where: { id: Number(id) }})
+            return res.status(200).json(fonteAtualizada)
 
         } catch (error) {
             return res.status(500).json(error.message)
         }
     }
 
-    static async apagaNoticia(req, res) {
+    static async apagaFonte(req, res) {
         const { id } = req.params
         try {
             await database.Fontes.destroy({where: { id: number(id) }})
@@ -57,8 +57,17 @@ class FonteController {
         } catch ( error ) {
             return res.status(500).josn(error.message)
         }
-
     }
+
+    static async restauraFonte(req, res) {
+        const { id } = req.params
+        try {
+          await database.Fontes.restore( {where: { id: Number(id) } } )
+          return res.status(200).json({ mensagem: `id ${id} restaurado`})
+        } catch (error) {
+          return res.status(500).json(error.message)
+        }
+      }
 }
 
 module.exports = FonteController
