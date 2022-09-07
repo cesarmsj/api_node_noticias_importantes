@@ -27,7 +27,14 @@ class NoticiaController {
         const novaNoticia = req.body
         
         try {
+            const { tags, ...novaNoticia } = req.body
+
             const novaNoticiaCriada = await noticiasServices.criaRegistro(novaNoticia)
+
+            if (tags && tags.length > 0) {
+                await noticiasServices.atribuirTags(novaNoticiaCriada.id, tags)
+            }
+
             return res.status(200).json(novaNoticiaCriada)
         } catch(error) {
             return res.status(500).json(error.message)

@@ -7,6 +7,22 @@ class NoticiasServices extends Services {
         super('Noticias')
     }
 
+    async atribuitTags(idNoticia, tags){
+
+        return database.sequelize.transaction(async transacao => {
+
+            await tags.forEach(tag => {
+
+                let tagNoticia = {
+                    noticiaId: idNoticia,
+                    tagId: tag
+                };
+              
+                database['TagsNoticias'].create({tagNoticia}, { transaction: transacao})
+
+         }) }, { transaction: transacao});
+    }
+
 }
 
 module.exports = NoticiasServices
